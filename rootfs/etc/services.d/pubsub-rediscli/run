@@ -1,0 +1,21 @@
+#!/usr/bin/with-contenv sh
+
+# Installation UUID must be informed
+if [ -z "$DASPANEL_SYS_UUID" ]; then
+    echo "***"
+    echo "ERROR: You must set the env variable DASPANEL_SYS_UUID to a valid UUID"
+    echo "***"
+    exit 1
+fi
+
+SERVER=`cat /opt/daspanel/data/$DASPANEL_SYS_UUID/db/sysconfig.json | /usr/bin/jq -r '.redis.server'`
+PORT=`cat /opt/daspanel/data/$DASPANEL_SYS_UUID/db/sysconfig.json | /usr/bin/jq -r '.redis.port'`
+DB=`cat /opt/daspanel/data/$DASPANEL_SYS_UUID/db/sysconfig.json | /usr/bin/jq -r '.redis.database'`
+PASSWORD=`cat /opt/daspanel/data/$DASPANEL_SYS_UUID/db/sysconfig.json | /usr/bin/jq -r '.redis.password'`
+
+#PUBSUB_SERVER="$SERVER:$PORT:$DB:$PASSWORD"
+PUBSUB_SERVER="daspanel-redis:6379:0:$DASPANEL_SYS_UUID"
+export DASPANEL_HTTP_ENGINE="load-balancer"
+exec /usr/sbin/redis-exec $PUBSUB_SERVER $DASPANEL_SYS_UUID:daspanel:sites /usr/sbin/daspanel.sites.sh
+
+

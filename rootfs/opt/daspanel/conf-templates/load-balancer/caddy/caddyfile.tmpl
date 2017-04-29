@@ -1,0 +1,73 @@
+# default port binded
+{{getenv "DASPANEL_SYS_HOST" "daspanel.site"}}:443 {
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    errors stdout
+    gzip
+    tls self_signed
+    proxy / daspanel-engine-static:80 {
+        #header_upstream X-Forwarded-Proto {scheme}
+        header_upstream X-Forwarded-Host {host}
+        header_upstream Host {host}
+    }
+}
+
+admin.{{getenv "DASPANEL_SYS_HOST" "daspanel.site"}}:443 {
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    errors stdout
+    tls self_signed
+    proxy / daspanel-panel:5000 {
+        header_upstream X-Forwarded-Proto {scheme}
+        header_upstream Host {host}
+        header_upstream X-Real-IP {remote}
+        header_upstream X-Forwarded-For {remote}
+    }
+    #proxy / daspanel-panel:5000
+
+}
+
+api.{{getenv "DASPANEL_SYS_HOST" "daspanel.site"}}:443 {
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    errors stdout
+    tls self_signed
+    #proxy / daspanel-api-connexion:8080 {
+    #    proxy_header Host {host}
+    #}
+    proxy / daspanel-api:8080
+
+}
+
+s3.svc.{{getenv "DASPANEL_SYS_HOST" "daspanel.site"}}:443 {
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    errors stdout
+    tls self_signed
+    proxy / daspanel-storage:9000 {
+        header_upstream X-Forwarded-Proto {scheme}
+        header_upstream X-Forwarded-Host {host}
+        header_upstream Host {host}
+    }
+}
+
+mail.svc.{{getenv "DASPANEL_SYS_HOST" "daspanel.site"}}:443 {
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    errors stdout
+    tls self_signed
+    proxy / daspanel-mail-catcher:8025 {
+        header_upstream X-Forwarded-Proto {scheme}
+        header_upstream X-Forwarded-Host {host}
+        header_upstream Host {host}
+    }
+}
+
+adminer.svc.{{getenv "DASPANEL_SYS_HOST" "daspanel.site"}}:443 {
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    errors stdout
+    tls self_signed
+    proxy / daspanel-services:8080 {
+        #header_upstream X-Forwarded-Proto {scheme}
+        header_upstream X-Forwarded-Host {host}
+        header_upstream Host {host}
+    }
+}
+
+
+import sites-enabled/*.conf

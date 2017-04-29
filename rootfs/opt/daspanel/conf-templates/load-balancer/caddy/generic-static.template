@@ -1,0 +1,13 @@
+# SITE NAME = {{ (getenv "SITEINFO" | json).sitedescription }}
+# SITE TYPE = {{ (getenv "SITECFG" | json).sitetype }}
+{{ (getenv "SITECFG" | json).name }}:443 {
+    errors stdout
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    tls self_signed
+    proxy / daspanel-engine-{{ (getenv "SITECFG" | json).engine }}:80 {
+        header_upstream X-Forwarded-Proto {scheme}
+        header_upstream X-Forwarded-Host {host}
+        header_upstream Host {host}
+    }
+}
+
