@@ -8,9 +8,25 @@ Released by N/A, Fri 12 May 2017 -
 [see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
 ______________
 
+### 0.3.2
+__Changes__
+
+- bumped to version 0.3.2
+- Cleanup.
+- redis-exec does not allow to pass parameters to the script to be executed.
+
+__Contributors__
+
+- Abner G Jacobsen
+
+Released by Abner G Jacobsen, Fri 12 May 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.3.1...0.3.2#diff)
+______________
+
 ### 0.3.1
 __Changes__
 
+- See changes in CHANGELOG.md
 - bumped to version 0.3.1
 - Bugfix
 
