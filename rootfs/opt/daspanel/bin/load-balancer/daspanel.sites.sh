@@ -2,7 +2,7 @@
 engine="$1"
 DASPANEL_SYS_HOSTNAME="$2"
 content=$(wget -O- --header=Content-Type:application/json --header="Authorization: $DASPANEL_SYS_UUID" "$DASPANEL_SYS_APISERVER/sites/httpconf/$DASPANEL_SYS_HOSTNAME")
-echo "[DASPANEL-ENGINE] INFO Processing site templates for engine: $engine"
+echo "[DASPANEL-LB] INFO Processing site templates for engine: $engine"
 
 # Remove all config of SITES-AVAILBLE FOR this engine
 rm /etc/caddy/sites-enabled/*
@@ -27,18 +27,18 @@ echo $content | jq -rc '.[]' | while IFS='' read site;do
                 if [ -f "$template2" ]; then
                     template=$template2
                 else
-                    if [ -f "$template2" ]; then
+                    if [ -f "$template3" ]; then
                         template=$template3
                     else
                         template=""
-                        echo "[DASPANEL-ENGINE] FAIL Site $siteuuid missing templates: $template1 OR $template2 OR $template3"
+                        echo "[DASPANEL-LB] FAIL Site $siteuuid missing templates: $template1 OR $template2 OR $template3"
                     fi
                 fi
             fi
             if [ ! -z "$template" ]; then
                 export SITEINFO=$site
                 export SITECFG=$sitecfg
-                echo "[DASPANEL-ENGINE] INFO Processing site $siteuuid template: $template"
+                echo "[DASPANEL-LB] INFO Processing site $siteuuid template: $template"
                 /usr/bin/gomplate \
                     < $template \
                     >> /etc/caddy/sites-available/$siteuuid.conf
