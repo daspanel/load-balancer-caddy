@@ -1,8 +1,7 @@
-#!/bin/sh
-export DASPANEL_SYS_HOSTNAME=`cat /opt/daspanel/data/$DASPANEL_SYS_UUID/db/sysconfig.json | /usr/bin/jq -r '.sys.hostname'`
-export DASPANEL_SYS_APISERVER=`cat /opt/daspanel/data/$DASPANEL_SYS_UUID/db/sysconfig.json | /usr/bin/jq -r '.sys.apiserver'`
+#!/usr/bin/with-contenv sh
+engine="$1"
+DASPANEL_SYS_HOSTNAME="$2"
 content=$(wget -O- --header=Content-Type:application/json --header="Authorization: $DASPANEL_SYS_UUID" "$DASPANEL_SYS_APISERVER/sites/httpconf/$DASPANEL_SYS_HOSTNAME")
-engine=$DASPANEL_HTTP_ENGINE
 echo "[DASPANEL-ENGINE] INFO Processing site templates for engine: $engine"
 
 # Remove all config of SITES-AVAILBLE FOR this engine
@@ -21,14 +20,19 @@ echo $content | jq -rc '.[]' | while IFS='' read site;do
             template=""
             template1="/opt/daspanel/data/$DASPANEL_SYS_UUID/conf-templates/$engine/caddy/$sitetype-$siteengine.template"
             template2="/opt/daspanel/conf-templates/$engine/caddy/$sitetype-$siteengine.template"
+            template3="/opt/daspanel/conf-templates/$engine/caddy/default.template"
             if [ -f "$template1" ]; then
                 template=$template1
             else
                 if [ -f "$template2" ]; then
                     template=$template2
                 else
-                    template=""
-                    echo "[DASPANEL-ENGINE] FAIL Site $siteuuid missing templates: $template1 OR $template2"
+                    if [ -f "$template2" ]; then
+                        template=$template3
+                    else
+                        template=""
+                        echo "[DASPANEL-ENGINE] FAIL Site $siteuuid missing templates: $template1 OR $template2 OR $template3"
+                    fi
                 fi
             fi
             if [ ! -z "$template" ]; then
