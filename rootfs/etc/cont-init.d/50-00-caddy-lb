@@ -31,7 +31,8 @@ if [ ! $result -eq 0 ] ; then
     echo "[DASPANEL] Unable to get tenant configuration from API server: $0" >&2
     exit 1
 fi
-export SYS_HOSTNAME=`echo $SYSCFG | /usr/bin/jq -r '.sys.hostname'`
+export DASPANEL_SYS_HOSTNAME=`echo $SYSCFG | /usr/bin/jq -r '.sys.hostname'`
+export ENGINE="load-balancer"
 
 if [ ! -d "/etc/caddy" ]; then
     mkdir -p /etc/caddy
@@ -59,7 +60,7 @@ fi
 /opt/daspanel/bin/load-balancer/configure-rootca.sh $DASPANEL_SYS_UUID
 
 # Create control panel certs
-/opt/daspanel/bin/load-balancer/gen-cert.sh $SYS_HOSTNAME
+/opt/daspanel/bin/load-balancer/gen-cert.sh $DASPANEL_SYS_HOSTNAME
 
 # Configure caddy
 /usr/bin/gomplate -d cfg=$DASPANEL_SYS_APISERVER/tenants/$DASPANEL_SYS_UUID \
@@ -68,7 +69,7 @@ fi
     > /etc/caddy/caddyfile
 
 # Get sites http entries
-/opt/daspanel/bin/load-balancer/daspanel.sites.sh "load-balancer" $SYS_HOSTNAME
+/opt/daspanel/bin/load-balancer/daspanel.sites.sh
 
 # secure daspanel
 chown -R daspanel:daspanel /opt/daspanel/data

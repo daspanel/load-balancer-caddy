@@ -1,8 +1,6 @@
-#!/usr/bin/with-contenv sh
-engine="$1"
-DASPANEL_SYS_HOSTNAME="$2"
+#!/bin/sh
 content=$(wget -O- --header=Content-Type:application/json --header="Authorization: $DASPANEL_SYS_UUID" "$DASPANEL_SYS_APISERVER/sites/httpconf/$DASPANEL_SYS_HOSTNAME")
-echo "[DASPANEL-LB] INFO Processing site templates for engine: $engine"
+echo "[DASPANEL-LB] INFO Processing site templates for engine: $ENGINE"
 
 # Remove all config of SITES-AVAILBLE FOR this engine
 rm /etc/caddy/sites-enabled/*
@@ -15,12 +13,12 @@ echo $content | jq -rc '.[]' | while IFS='' read site;do
     configs=$(echo $site | jq -r .configs )
     echo $configs | jq -rc '.[]' | while IFS='' read sitecfg;do
         siteengine=$(echo "$sitecfg" | jq -r .engine)
-        #if [ "$siteengine" == "$engine" ]; then
+        #if [ "$siteengine" == "$ENGINE" ]; then
             sitetype=$(echo "$sitecfg" | jq -r .sitetype)
             template=""
-            template1="/opt/daspanel/data/$DASPANEL_SYS_UUID/conf-templates/$engine/caddy/$sitetype-$siteengine.template"
-            template2="/opt/daspanel/conf-templates/$engine/caddy/$sitetype-$siteengine.template"
-            template3="/opt/daspanel/conf-templates/$engine/caddy/default.template"
+            template1="/opt/daspanel/data/$DASPANEL_SYS_UUID/conf-templates/$ENGINE/caddy/$sitetype-$siteengine.template"
+            template2="/opt/daspanel/conf-templates/$ENGINE/caddy/$sitetype-$siteengine.template"
+            template3="/opt/daspanel/conf-templates/$ENGINE/caddy/default.template"
             if [ -f "$template1" ]; then
                 template=$template1
             else
