@@ -4,13 +4,28 @@
 __Changes__
 
 
-Released by N/A, Fri 12 May 2017 -
+Released by N/A, Sat 13 May 2017 -
 [see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
+______________
+
+### 0.3.3
+__Changes__
+
+- bumped to version 0.3.3
+- Corrected the way load balancer proxy https requests to internal containers.
+
+__Contributors__
+
+- Abner G Jacobsen
+
+Released by Abner G Jacobsen, Sat 13 May 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.3.2...0.3.3#diff)
 ______________
 
 ### 0.3.2
 __Changes__
 
+- See changes in CHANGELOG.md
 - bumped to version 0.3.2
 - Cleanup.
 - redis-exec does not allow to pass parameters to the script to be executed.
