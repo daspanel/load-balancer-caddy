@@ -1,22 +1,28 @@
 # default port binded
-#{{getenv "DASPANEL_SYS_HOST" "daspanel.site"}}:443 {
-{{ (datasource "cfg").sys.hostname }}:443 {
-    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
-    errors stdout
-    gzip
-    #tls self_signed
-    tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
-    proxy / daspanel-engine-static:80 {
-        #header_upstream X-Forwarded-Proto {scheme}
-        header_upstream X-Forwarded-Host {host}
-        header_upstream Host {host}
+{{ (datasource "cfg").sys.hostname }}:80 {
+    redir 301 {
+        /  https://{host}{uri}
     }
 }
-
-admin.{{ (datasource "cfg").sys.hostname }}:443 {
-    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+{{ (datasource "cfg").sys.hostname }}:443 {
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:443 {host} {uri} {proto} {status} {size} {latency}" 
     errors stdout
-    #tls self_signed
+    gzip
+    tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
+    proxy / https://daspanel-engine-static {
+        policy least_conn
+        transparent
+        insecure_skip_verify
+    }
+}
+admin.{{ (datasource "cfg").sys.hostname }}:80 {
+    redir 301 {
+        /  https://{host}{uri}
+    }
+}
+admin.{{ (datasource "cfg").sys.hostname }}:443 {
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-panel:5000 {host} {uri} {proto} {status} {size} {latency}" 
+    errors stdout
     tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
     proxy / daspanel-panel:5000 {
         header_upstream X-Forwarded-Proto {scheme}
@@ -24,26 +30,27 @@ admin.{{ (datasource "cfg").sys.hostname }}:443 {
         header_upstream X-Real-IP {remote}
         header_upstream X-Forwarded-For {remote}
     }
-    #proxy / daspanel-panel:5000
-
 }
-
+api.{{ (datasource "cfg").sys.hostname }}:80 {
+    redir 301 {
+        /  https://{host}{uri}
+    }
+}
 api.{{ (datasource "cfg").sys.hostname }}:443 {
-    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-api:8080 {uri} {proto} {status} {size} {latency}" 
     errors stdout
-    #tls self_signed
     tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
-    #proxy / daspanel-api-connexion:8080 {
-    #    proxy_header Host {host}
-    #}
     proxy / daspanel-api:8080
 
 }
-
+s3.svc.{{ (datasource "cfg").sys.hostname }}:80 {
+    redir 301 {
+        /  https://{host}{uri}
+    }
+}
 s3.svc.{{ (datasource "cfg").sys.hostname }}:443 {
-    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-storage:9000 {host} {uri} {proto} {status} {size} {latency}" 
     errors stdout
-    #tls self_signed
     tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
     proxy / daspanel-storage:9000 {
         header_upstream X-Forwarded-Proto {scheme}
@@ -51,11 +58,14 @@ s3.svc.{{ (datasource "cfg").sys.hostname }}:443 {
         header_upstream Host {host}
     }
 }
-
+mail.svc.{{ (datasource "cfg").sys.hostname }}:80 {
+    redir 301 {
+        /  https://{host}{uri}
+    }
+}
 mail.svc.{{ (datasource "cfg").sys.hostname }}:443 {
-    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-mail-catcher:8025 {host} {uri} {proto} {status} {size} {latency}" 
     errors stdout
-    #tls self_signed
     tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
     proxy / daspanel-mail-catcher:8025 {
         header_upstream X-Forwarded-Proto {scheme}
@@ -63,11 +73,14 @@ mail.svc.{{ (datasource "cfg").sys.hostname }}:443 {
         header_upstream Host {host}
     }
 }
-
+adminer.svc.{{ (datasource "cfg").sys.hostname }}:80 {
+    redir 301 {
+        /  https://{host}{uri}
+    }
+}
 adminer.svc.{{ (datasource "cfg").sys.hostname }}:443 {
-    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:80 {host} {uri} {proto} {status} {size} {latency}" 
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-services:8080 {host} {uri} {proto} {status} {size} {latency}" 
     errors stdout
-    #tls self_signed
     tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
     proxy / daspanel-services:8080 {
         #header_upstream X-Forwarded-Proto {scheme}
