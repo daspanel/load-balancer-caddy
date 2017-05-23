@@ -79,13 +79,13 @@ adminer.svc.{{ (datasource "cfg").sys.hostname }}:80 {
     }
 }
 adminer.svc.{{ (datasource "cfg").sys.hostname }}:443 {
-    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-services:8080 {host} {uri} {proto} {status} {size} {latency}" 
+    log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-services:443 {host} {uri} {proto} {status} {size} {latency}" 
     errors stdout
     tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
-    proxy / daspanel-services:8080 {
-        #header_upstream X-Forwarded-Proto {scheme}
-        header_upstream X-Forwarded-Host {host}
-        header_upstream Host {host}
+    proxy / https://daspanel-services {
+        policy least_conn
+        transparent
+        insecure_skip_verify
     }
 }
 
