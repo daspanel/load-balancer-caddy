@@ -4,13 +4,28 @@
 __Changes__
 
 
-Released by N/A, Sat 13 May 2017 -
+Released by N/A, Tue 23 May 2017 -
 [see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
+______________
+
+### 0.3.4
+__Changes__
+
+- bumped to version 0.3.4
+- Modified Adminer container internal to be proxied with https only.
+
+__Contributors__
+
+- Abner G Jacobsen
+
+Released by Abner G Jacobsen, Tue 23 May 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.3.3...0.3.4#diff)
 ______________
 
 ### 0.3.3
 __Changes__
 
+- See changes in CHANGELOG.md
 - bumped to version 0.3.3
 - Corrected the way load balancer proxy https requests to internal containers.
 
