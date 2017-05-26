@@ -15,6 +15,7 @@ echo $content | jq -rc '.[]' | while IFS='' read site;do
         siteengine=$(echo "$sitecfg" | jq -r .engine)
         #if [ "$siteengine" == "$ENGINE" ]; then
             sitetype=$(echo "$sitecfg" | jq -r .sitetype)
+            sitedomain=$(echo "$sitecfg" | jq -r .domain)
             template=""
             template1="/opt/daspanel/data/$DASPANEL_SYS_UUID/conf-templates/$ENGINE/caddy/$sitetype-$siteengine.template"
             template2="/opt/daspanel/conf-templates/$ENGINE/caddy/$sitetype-$siteengine.template"
@@ -40,6 +41,11 @@ echo $content | jq -rc '.[]' | while IFS='' read site;do
                 /usr/bin/gomplate \
                     < $template \
                     >> /etc/caddy/sites-available/$siteuuid.conf
+
+                # Generate certificates redirected domains
+                if [ "$sitedomain" != "$DASPANEL_SYS_HOSTNAME" ]; then
+                    /opt/daspanel/bin/load-balancer/gen-cert.sh $sitedomain
+                fi
             fi
             # do your processing here
         #else
