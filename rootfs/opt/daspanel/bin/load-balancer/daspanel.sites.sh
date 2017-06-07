@@ -67,6 +67,6 @@ echo $content | jq -rc '.[]' | while IFS='' read site;do
 done
 
 if [ -d "/var/run/s6/services/caddy-lb" ]; then
-    /bin/s6-svc -h /var/run/s6/services/caddy-lb
+    /bin/s6-svc -1 /var/run/s6/services/caddy-lb
 fi
 
