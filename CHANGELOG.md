@@ -1,8 +1,33 @@
 # Changelog - admindaspanel / load-balancer-caddy
 
+### load-balancer-caddy-0.2.0
+__Changes__
+
+
+Released by N/A, Wed 07 Jun 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
+______________
+
+### 0.4.0
+__Changes__
+
+- bumped to version 0.4.0
+- For now, only one template is required to serve all HTTP engines.
+- Implemented the use of self signed SSL certificates as well as valid certificates signed by LetsEncrypt. Valid certificates are only used if the value of DASPANEL_SYS_HOSTNAME is not equal to 'daspanel.site'
+- Changed way as Caddy reloads vhosts from caddyfile as instructed in https://caddyserver.com/blog/certificate-management-policies
+
+__Contributors__
+
+- Abner G Jacobsen
+
+Released by Abner G Jacobsen, Wed 07 Jun 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.3.5...0.4.0#diff)
+______________
+
 ### 0.3.5
 __Changes__
 
+- See changes in CHANGELOG.md
 - bumped to version 0.3.5
 - Generate certs for sites with domains not equal the DASPANEL hostname.
 
@@ -12,14 +37,6 @@ __Contributors__
 
 Released by Abner G Jacobsen, Fri 26 May 2017 -
 [see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.3.4...0.3.5#diff)
-______________
-
-### load-balancer-caddy-0.2.0
-__Changes__
-
-
-Released by N/A, Fri 26 May 2017 -
-[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
 ______________
 
 ### 0.3.4
