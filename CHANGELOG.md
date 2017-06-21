@@ -4,13 +4,27 @@
 __Changes__
 
 
-Released by N/A, Wed 07 Jun 2017 -
+Released by N/A, Wed 21 Jun 2017 -
 [see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
+______________
+
+### 0.5.0
+__Changes__
+
+- bumped to version 0.5.0
+
+__Contributors__
+
+- Abner G Jacobsen
+
+Released by Abner G Jacobsen, Wed 21 Jun 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.4.0...0.5.0#diff)
 ______________
 
 ### 0.4.0
 __Changes__
 
+- See changes in CHANGELOG.md
 - bumped to version 0.4.0
 - For now, only one template is required to serve all HTTP engines.
 - Implemented the use of self signed SSL certificates as well as valid certificates signed by LetsEncrypt. Valid certificates are only used if the value of DASPANEL_SYS_HOSTNAME is not equal to 'daspanel.site'
