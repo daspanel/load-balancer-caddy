@@ -4,13 +4,28 @@
 __Changes__
 
 
-Released by N/A, Fri 23 Jun 2017 -
+Released by N/A, Wed 05 Jul 2017 -
 [see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
+______________
+
+### 0.7.0
+__Changes__
+
+- bumped to version 0.7.0
+- Removed dependence from daspanel/alpine-base.
+
+__Contributors__
+
+- Abner G Jacobsen
+
+Released by Abner G Jacobsen, Wed 05 Jul 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.6.0...0.7.0#diff)
 ______________
 
 ### 0.6.0
 __Changes__
 
+- See changes in CHANGELOG.md
 - bumped to version 0.6.0
 - Enabled use of real certificates by Letsencrypt.
 
