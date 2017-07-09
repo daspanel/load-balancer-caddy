@@ -4,13 +4,28 @@
 __Changes__
 
 
-Released by N/A, Wed 05 Jul 2017 -
+Released by N/A, Sat 08 Jul 2017 -
 [see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
+______________
+
+### 0.8.0
+__Changes__
+
+- bumped to version 0.8.0
+- Need to install openssl binary to work.
+
+__Contributors__
+
+- Abner G Jacobsen
+
+Released by Abner G Jacobsen, Sat 08 Jul 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.7.0...0.8.0#diff)
 ______________
 
 ### 0.7.0
 __Changes__
 
+- See changes in CHANGELOG.md
 - bumped to version 0.7.0
 - Removed dependence from daspanel/alpine-base.
 
