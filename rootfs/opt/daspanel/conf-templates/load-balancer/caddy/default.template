@@ -53,7 +53,7 @@
         }
         {{else if eq (getenv "SITECFG" | json).ssl "letsencrypt" -}}
         # letsencrypt
-        tls admin@daspanel.com
+        tls {{ (getenv "SITEINFO" | json).admin }}
         {{else -}}
         # SSL Type {{ (getenv "SITECFG" | json).ssl }} 33
         tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (getenv "SITECFG" | json).domain }}/{{ (getenv "SITECFG" | json).domain }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem 
