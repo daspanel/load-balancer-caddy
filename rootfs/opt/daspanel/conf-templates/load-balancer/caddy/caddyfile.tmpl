@@ -1,4 +1,4 @@
-{{if eq .Env.DASPANEL_SYS_HOSTNAME "daspanel.site" -}}
+{{if eq (datasource "cfg").sys.hostname "daspanel.site" -}}
     # IMPORTANT = Only self signed SSL certificates can be used while running Daspanel in local mode (daspanel.site == 127.0.0.1)
     # default port binded
     {{ (datasource "cfg").sys.hostname }}:80 {

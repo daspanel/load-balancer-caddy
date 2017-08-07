@@ -1,7 +1,7 @@
 # SITE NAME = {{ (getenv "SITEINFO" | json).sitedescription }}
 # SITE TYPE = {{ (getenv "SITECFG" | json).sitetype }}
-# HOST NAME = {{getenv "DASPANEL_SYS_HOSTNAME"}}
-{{if eq .Env.DASPANEL_SYS_HOSTNAME "daspanel.site" -}}
+# HOST NAME = {{ (datasource "cfg").sys.hostname }}
+{{if eq (datasource "cfg").sys.hostname "daspanel.site" -}}
     # IMPORTANT = Only self signed SSL certificates can be used while running Daspanel in local mode (daspanel.site == 127.0.0.1)
     {{ (getenv "SITECFG" | json).name }}:80 {
         redir 301 {
@@ -12,20 +12,20 @@
         errors stdout
         log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-{{ (getenv "SITECFG" | json).engine }}:443 {host} {uri} {proto} {status} {size} {latency}" 
         {{if eq (getenv "SITECFG" | json).ssl "self" -}}
-        # self
+        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 1
         tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (getenv "SITECFG" | json).domain }}/{{ (getenv "SITECFG" | json).domain }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem 
         {{else if eq (getenv "SITECFG" | json).ssl "auto" -}}
-        # auto
+        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 2
         tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (getenv "SITECFG" | json).domain }}/{{ (getenv "SITECFG" | json).domain }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
         #tls {
         #    max_certs 10
         #}
         {{else if eq (getenv "SITECFG" | json).ssl "letsencrypt" -}}
-        # letsencrypt
+        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 3
         tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (getenv "SITECFG" | json).domain }}/{{ (getenv "SITECFG" | json).domain }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
         #tls admin@daspanel.com
         {{else -}}
-        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 33
+        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 4
         tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (getenv "SITECFG" | json).domain }}/{{ (getenv "SITECFG" | json).domain }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem 
         {{end -}}
         proxy / https://daspanel-engine-{{ (getenv "SITECFG" | json).engine }} {
@@ -44,18 +44,18 @@
         errors stdout
         log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-{{ (getenv "SITECFG" | json).engine }}:443 {host} {uri} {proto} {status} {size} {latency}" 
         {{if eq (getenv "SITECFG" | json).ssl "self" -}}
-        # self
+        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 5
         tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (getenv "SITECFG" | json).domain }}/{{ (getenv "SITECFG" | json).domain }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem 
         {{else if eq (getenv "SITECFG" | json).ssl "auto" -}}
-        # auto
+        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 6
         tls {
             max_certs 10
         }
         {{else if eq (getenv "SITECFG" | json).ssl "letsencrypt" -}}
-        # letsencrypt
+        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 7
         tls {{ (getenv "SITEINFO" | json).admin }}
         {{else -}}
-        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 33
+        # SSL Type {{ (getenv "SITECFG" | json).ssl }} 8
         tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (getenv "SITECFG" | json).domain }}/{{ (getenv "SITECFG" | json).domain }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem 
         {{end -}}
         proxy / https://daspanel-engine-{{ (getenv "SITECFG" | json).engine }} {
