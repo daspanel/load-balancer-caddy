@@ -1,8 +1,31 @@
 # Changelog - admindaspanel / load-balancer-caddy
 
+### 0.9.3
+__Changes__
+
+- bumped to version 0.9.3
+- Removed default entry for the hostname used. This way you can create redirects to www.hostname for any of the managed sites.
+
+__Contributors__
+
+- Abner G Jacobsen
+
+Released by Abner G Jacobsen, Fri 11 Aug 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.9.2...0.9.3#diff)
+______________
+
+### load-balancer-caddy-0.2.0
+__Changes__
+
+
+Released by N/A, Fri 11 Aug 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
+______________
+
 ### 0.9.2
 __Changes__
 
+- See changes in CHANGELOG.md
 - bumped to version 0.9.2
 - Use data from API call when generating caddy config for site.
 - Get info from API server before generate from template.
@@ -13,14 +36,6 @@ __Contributors__
 
 Released by Abner G Jacobsen, Mon 07 Aug 2017 -
 [see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.9.1...0.9.2#diff)
-______________
-
-### load-balancer-caddy-0.2.0
-__Changes__
-
-
-Released by N/A, Mon 07 Aug 2017 -
-[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
 ______________
 
 ### 0.9.1
