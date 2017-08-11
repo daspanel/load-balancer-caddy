@@ -1,22 +1,6 @@
 {{if eq (datasource "cfg").sys.hostname "daspanel.site" -}}
     # IMPORTANT = Only self signed SSL certificates can be used while running Daspanel in local mode (daspanel.site == 127.0.0.1)
     # default port binded
-    {{ (datasource "cfg").sys.hostname }}:80 {
-        redir 301 {
-            /  https://{host}{uri}
-        }
-    }
-    {{ (datasource "cfg").sys.hostname }}:443 {
-        log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:443 {host} {uri} {proto} {status} {size} {latency}" 
-        errors stdout
-        gzip
-        tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
-        proxy / https://daspanel-engine-static {
-            policy least_conn
-            transparent
-            insecure_skip_verify
-        }
-    }
     admin.{{ (datasource "cfg").sys.hostname }}:80 {
         redir 301 {
             /  https://{host}{uri}
@@ -108,24 +92,6 @@
 
 {{else -}}
     # default port binded
-    {{ (datasource "cfg").sys.hostname }}:80 {
-        redir 301 {
-            /  https://{host}{uri}
-        }
-    }
-    {{ (datasource "cfg").sys.hostname }}:443 {
-        log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-engine-static:443 {host} {uri} {proto} {status} {size} {latency}" 
-        errors stdout
-        gzip
-        tls {
-            max_certs 10
-        }
-        proxy / https://daspanel-engine-static {
-            policy least_conn
-            transparent
-            insecure_skip_verify
-        }
-    }
     admin.{{ (datasource "cfg").sys.hostname }}:80 {
         redir 301 {
             /  https://{host}{uri}
