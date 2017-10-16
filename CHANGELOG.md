@@ -1,8 +1,10 @@
 # Changelog - admindaspanel / load-balancer-caddy
 
-### 0.10.0
+### 0.11.0
 __Changes__
 
+- bumped to version 0.11.0
+- See changes in CHANGELOG.md
 - bumped to version 0.10.0
 - Added _ds subdomain for every site; this allow to implement terminal access and another services from Daspanel associated with the domain.
 - Build Caddy from source insteaded from binary downladod.
@@ -12,7 +14,7 @@ __Contributors__
 - Abner G Jacobsen
 
 Released by Abner G Jacobsen, Sun 15 Oct 2017 -
-[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.9.3...0.10.0#diff)
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.9.3...0.11.0#diff)
 ______________
 
 ### load-balancer-caddy-0.2.0
