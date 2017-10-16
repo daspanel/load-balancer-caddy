@@ -1,0 +1,10 @@
+github.com/captncraig/cors/caddy
+github.com/epicagency/caddy-expires
+github.com/captncraig/caddy-realip
+github.com/xuqingfeng/caddy-rate-limit
+github.com/pyed/ipfilter
+github.com/caddyserver/dnsproviders/cloudflare
+github.com/caddyserver/dnsproviders/digitalocean
+github.com/caddyserver/dnsproviders/googlecloud
+github.com/caddyserver/dnsproviders/linode
+github.com/caddyserver/dnsproviders/route53
