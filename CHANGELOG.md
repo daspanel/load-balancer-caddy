@@ -1,8 +1,10 @@
 # Changelog - admindaspanel / load-balancer-caddy
 
-### 0.11.0
+### 0.12.0
 __Changes__
 
+- bumped to version 0.12.0
+- See changes in CHANGELOG.md
 - bumped to version 0.11.0
 - See changes in CHANGELOG.md
 - bumped to version 0.10.0
@@ -14,7 +16,7 @@ __Contributors__
 - Abner G Jacobsen
 
 Released by Abner G Jacobsen, Sun 15 Oct 2017 -
-[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.9.3...0.11.0#diff)
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.9.3...0.12.0#diff)
 ______________
 
 ### load-balancer-caddy-0.2.0
