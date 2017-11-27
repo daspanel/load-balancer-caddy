@@ -1,8 +1,31 @@
 # Changelog - admindaspanel / load-balancer-caddy
 
+### 0.12.1
+__Changes__
+
+- bumped to version 0.12.1
+- Added support to S3 virtual-host-style requests.
+
+__Contributors__
+
+- Abner G Jacobsen
+
+Released by Abner G Jacobsen, Mon 27 Nov 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.12.0...0.12.1#diff)
+______________
+
+### load-balancer-caddy-0.2.0
+__Changes__
+
+
+Released by N/A, Mon 27 Nov 2017 -
+[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
+______________
+
 ### 0.12.0
 __Changes__
 
+- See changes in CHANGELOG.md
 - bumped to version 0.12.0
 - See changes in CHANGELOG.md
 - bumped to version 0.11.0
@@ -17,14 +40,6 @@ __Contributors__
 
 Released by Abner G Jacobsen, Sun 15 Oct 2017 -
 [see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/0.9.3...0.12.0#diff)
-______________
-
-### load-balancer-caddy-0.2.0
-__Changes__
-
-
-Released by N/A, Sun 15 Oct 2017 -
-[see the diff](https://github.com/admindaspanel/load-balancer-caddy/compare/...#diff)
 ______________
 
 ### 0.9.3
