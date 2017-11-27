@@ -29,19 +29,17 @@
         proxy / daspanel-api:8080
 
     }
-    s3.svc.{{ (datasource "cfg").sys.hostname }}:80 {
+    s3.svc.{{ (datasource "cfg").sys.hostname }}:80 *.s3.svc.{{ (datasource "cfg").sys.hostname }}:80 {
         redir 301 {
             /  https://{host}{uri}
         }
     }
-    s3.svc.{{ (datasource "cfg").sys.hostname }}:443 {
+    s3.svc.{{ (datasource "cfg").sys.hostname }}:443 *.s3.svc.{{ (datasource "cfg").sys.hostname }}:443 {
         log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-storage:9000 {host} {uri} {proto} {status} {size} {latency}" 
         errors stdout
         tls /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/{{ (datasource "cfg").sys.hostname }}/{{ (datasource "cfg").sys.hostname }}.bundle.cert.pem /opt/daspanel/data/{{getenv "DASPANEL_SYS_UUID"}}/certs/self/ca/root.key.pem
         proxy / daspanel-storage:9000 {
-            header_upstream X-Forwarded-Proto {scheme}
-            header_upstream X-Forwarded-Host {host}
-            header_upstream Host {host}
+            transparent
         }
     }
     mail.svc.{{ (datasource "cfg").sys.hostname }}:80 {
@@ -124,21 +122,19 @@
         proxy / daspanel-api:8080
 
     }
-    s3.svc.{{ (datasource "cfg").sys.hostname }}:80 {
+    s3.svc.{{ (datasource "cfg").sys.hostname }}:80 *.s3.svc.{{ (datasource "cfg").sys.hostname }}:80 {
         redir 301 {
             /  https://{host}{uri}
         }
     }
-    s3.svc.{{ (datasource "cfg").sys.hostname }}:443 {
+    s3.svc.{{ (datasource "cfg").sys.hostname }}:443 *.s3.svc.{{ (datasource "cfg").sys.hostname }}:443 {
         log / stdout "[DASPANEL-LB-ACCESSLOG] {when_iso} {remote} daspanel-storage:9000 {host} {uri} {proto} {status} {size} {latency}" 
         errors stdout
         tls {
             max_certs 10
         }
         proxy / daspanel-storage:9000 {
-            header_upstream X-Forwarded-Proto {scheme}
-            header_upstream X-Forwarded-Host {host}
-            header_upstream Host {host}
+            transparent
         }
     }
     mail.svc.{{ (datasource "cfg").sys.hostname }}:80 {
