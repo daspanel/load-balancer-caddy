@@ -3,6 +3,9 @@
 export DASPANEL_CONTAINER_TYPE="load-balancer-caddy"
 printf $DASPANEL_CONTAINER_TYPE > /var/run/s6/container_environment/DASPANEL_CONTAINER_TYPE
 
+export CADDYPATH="/opt/daspanel/data/$DASPANEL_SYS_UUID/containers/$DASPANEL_CONTAINER_TYPE/.caddy"
+printf $CADDYPATH > /var/run/s6/container_environment/CADDYPATH
+
 # Installation UUID must be informed
 if [ -z "$DASPANEL_SYS_UUID" ]; then
     echo "[DASPANEL-$DASPANEL_CONTAINER_TYPE] ERROR: You must set the env variable DASPANEL_SYS_UUID to a valid UUID"
@@ -62,6 +65,7 @@ fi
 
 # Create control panel certs
 /opt/daspanel/bin/load-balancer/gen-cert.sh $DASPANEL_SYS_HOSTNAME
+chown -R daspanel:daspanel /opt/daspanel/data/$DASPANEL_SYS_UUID/certs
 
 # Configure caddy
 /opt/daspanel/bin/gomplate -d cfg=$DASPANEL_SYS_APISERVER/tenants/$DASPANEL_SYS_UUID \
@@ -72,7 +76,13 @@ fi
 # Get sites http entries
 /opt/daspanel/bin/load-balancer/daspanel.sites.sh
 
+# Create CADDY dir
+if [ ! -d "$CADDYPATH" ]; then
+	mkdir -p "$CADDYPATH"
+fi
+chown -R daspanel:daspanel /opt/daspanel/data/$DASPANEL_SYS_UUID/containers
+
 # secure daspanel
-chown -R daspanel:daspanel /opt/daspanel/data
-chown -R daspanel:daspanel /opt/daspanel/log
+#chown -R daspanel:daspanel /opt/daspanel/data
+#chown -R daspanel:daspanel /opt/daspanel/log
 
